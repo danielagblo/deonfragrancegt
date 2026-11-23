@@ -70,7 +70,7 @@ Or set in your .env:
   }
 
   console.log('\n======================================================');
-  console.log('       RABBI AZANDUNA - DATABASE MIGRATION TOOL       ');
+  console.log('       DION FRAGRANCE - DATABASE MIGRATION TOOL       ');
   console.log('======================================================');
   console.log(`[Source]      ${sourceConfig.user}@${sourceConfig.host}:${sourceConfig.port}/${sourceConfig.database}`);
   console.log(`[Destination] ${destConfig.user}@${destConfig.host}:${destConfig.port}/${destConfig.database}`);

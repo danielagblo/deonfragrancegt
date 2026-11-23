@@ -900,7 +900,7 @@ export const AdminPortal: React.FC = () => {
               <Lock size={22} />
             </div>
             <h1 className="text-xl font-bold tracking-[0.2em] text-gray-900 uppercase mb-1">
-              RABBI AZANDUNA
+              DION FRAGRANCE
             </h1>
             <p className="text-xs text-gray-500 font-medium tracking-wider">
               Control Portal Authorization
@@ -976,7 +976,7 @@ export const AdminPortal: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <span className="font-bold text-sm sm:text-base tracking-[0.2em] text-black uppercase">
-              RABBI AZANDUNA <span className="text-[#e62b32] text-xs font-semibold ml-1">[CONTROL PORTAL]</span>
+              DION FRAGRANCE <span className="text-[#e62b32] text-xs font-semibold ml-1">[CONTROL PORTAL]</span>
             </span>
           </div>
 
@@ -1319,7 +1319,7 @@ export const AdminPortal: React.FC = () => {
                                     onClick={() => handleToggleComingSoon(prod)}
                                     className={`mt-1 inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide cursor-pointer ${
                                       prod.comingSoon
-                                        ? 'bg-[#0B1F3A] text-white'
+                                        ? 'bg-[#D4AF37] text-[#1C140C]'
                                         : 'bg-gray-100 text-gray-600 border border-gray-200 hover:border-gray-400'
                                     }`}
                                   >

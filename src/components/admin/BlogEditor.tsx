@@ -80,7 +80,7 @@ export const BlogEditor: React.FC<Props> = ({ value, onChange }) => {
               aria-label={tool.label}
               onMouseDown={(event) => event.preventDefault()}
               onClick={tool.run}
-              className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-[11px] font-bold text-gray-800 hover:border-[#0B1F3A] hover:text-[#0B1F3A] cursor-pointer"
+              className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-[11px] font-bold text-gray-800 hover:border-[#D4AF37] hover:text-[#7A5F0E] cursor-pointer"
             >
               <Icon size={13} />
               <span className="hidden sm:inline">{tool.label}</span>
@@ -96,7 +96,7 @@ export const BlogEditor: React.FC<Props> = ({ value, onChange }) => {
         aria-label="Article content"
         onInput={sync}
         suppressContentEditableWarning
-        className="min-h-56 max-h-[420px] overflow-y-auto px-4 py-3 text-sm leading-relaxed text-[#0B1F3A] focus:outline-none [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:font-['Barlow',sans-serif] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:uppercase [&_p]:mb-3 [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_blockquote]:my-3 [&_blockquote]:border-l-4 [&_blockquote]:border-[#0B1F3A] [&_blockquote]:pl-3 [&_blockquote]:italic [&_a]:underline"
+        className="min-h-56 max-h-[420px] overflow-y-auto px-4 py-3 text-sm leading-relaxed text-[#7A5F0E] focus:outline-none [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:font-['Cormorant_Garamond',serif] [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:uppercase [&_p]:mb-3 [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_blockquote]:my-3 [&_blockquote]:border-l-4 [&_blockquote]:border-[#D4AF37] [&_blockquote]:pl-3 [&_blockquote]:italic [&_a]:underline"
       />
     </div>
   );

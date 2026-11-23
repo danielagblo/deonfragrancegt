@@ -61,7 +61,7 @@ export const CollectionsGrid: React.FC<Props> = ({
     <section className="pt-4 sm:pt-6 pb-12 sm:pb-14 px-3.5 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-white">
       {/* 1. Condensed Heading */}
       <div className="text-center mb-4 sm:mb-6">
-        <Heading className="font-['Barlow_Condensed',sans-serif] text-[32px] sm:text-[44px] lg:text-[48px] font-bold text-[#0B1F3A] tracking-normal leading-tight">
+        <Heading className="font-['Cormorant_Garamond',serif] text-[32px] sm:text-[44px] lg:text-[48px] font-bold text-[#1C140C] tracking-normal leading-tight">
           {title}
         </Heading>
         {loading && (
@@ -95,7 +95,7 @@ export const CollectionsGrid: React.FC<Props> = ({
 
                   {savings && (
                     <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10">
-                      <span className="bg-[#0B1F3A] text-white font-extrabold text-[10px] sm:text-[12px] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-[3px] shadow-xs tracking-wider">
+                      <span className="bg-[#D4AF37] text-[#1C140C] font-extrabold text-[10px] sm:text-[12px] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-[3px] shadow-xs tracking-wider">
                         SAVE GH₵{savings}
                       </span>
                     </div>
@@ -104,13 +104,13 @@ export const CollectionsGrid: React.FC<Props> = ({
 
                 <div className="pt-3 text-center">
                   <a href={`/product/${prod.slug}`}>
-                    <h3 className="font-['Barlow',sans-serif] text-[15px] sm:text-[16px] font-bold text-[#0B1F3A] group-hover:text-[#0B1F3A] transition-colors">
+                    <h3 className="font-['Cormorant_Garamond',serif] text-[15px] sm:text-[16px] font-bold text-[#1C140C] group-hover:text-[#1C140C] transition-colors">
                       {prod.name}
                     </h3>
                   </a>
 
                   <div className="flex items-center justify-center gap-1 my-1">
-                    <div className="flex text-[#0B1F3A]">
+                    <div className="flex text-[#1C140C]">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} size={11} fill="currentColor" />
                       ))}
@@ -120,13 +120,13 @@ export const CollectionsGrid: React.FC<Props> = ({
                     </span>
                   </div>
 
-                  <div className="font-['Barlow',sans-serif] text-[13px] sm:text-[14px] font-bold flex items-center justify-center gap-1.5">
+                  <div className="font-['Cormorant_Garamond',serif] text-[13px] sm:text-[14px] font-bold flex items-center justify-center gap-1.5">
                     {prod.compareAtPrice && Number(prod.compareAtPrice) > prod.price ? (
-                      <span className="line-through text-[#0B1F3A] font-semibold">
+                      <span className="line-through text-[#1C140C] font-semibold">
                         GH₵{Number(prod.compareAtPrice).toFixed(2)}
                       </span>
                     ) : null}
-                    <span className="text-[#0B1F3A] font-bold">
+                    <span className="text-[#1C140C] font-bold">
                       GH₵{prod.price.toFixed(2)}
                     </span>
                   </div>
@@ -162,7 +162,7 @@ export const CollectionsGrid: React.FC<Props> = ({
                   {/* Badge if present */}
                   {cat.badge && (
                     <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10">
-                      <span className="bg-[#0B1F3A] text-white font-extrabold text-[10px] sm:text-[11px] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-[3px] shadow-xs tracking-wider">
+                      <span className="bg-[#D4AF37] text-[#1C140C] font-extrabold text-[10px] sm:text-[11px] uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-[3px] shadow-xs tracking-wider">
                         {cat.badge}
                       </span>
                     </div>
@@ -170,7 +170,7 @@ export const CollectionsGrid: React.FC<Props> = ({
 
                   {/* Product Count Pill */}
                   {productCount > 0 && (
-                    <span className="absolute bottom-2.5 right-2.5 bg-[#0B1F3A]/75 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded">
+                    <span className="absolute bottom-2.5 right-2.5 bg-[#1C140C]/75 backdrop-blur-xs text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded">
                       {productCount} {productCount === 1 ? 'Fragrance' : 'Fragrances'}
                     </span>
                   )}
@@ -178,7 +178,7 @@ export const CollectionsGrid: React.FC<Props> = ({
 
                 <div className="pt-2 pb-1 text-center flex flex-col items-center w-full">
                   <a href={`/collections/${cat.slug}`}>
-                    <h3 className="font-['Barlow_Condensed',sans-serif] text-base sm:text-lg font-bold text-[#0B1F3A] group-hover:text-[#0B1F3A] transition-colors mb-0.5 leading-tight">
+                    <h3 className="font-['Cormorant_Garamond',serif] text-base sm:text-lg font-bold text-[#1C140C] group-hover:text-[#1C140C] transition-colors mb-0.5 leading-tight">
                       {cat.name}
                     </h3>
                   </a>
@@ -192,7 +192,7 @@ export const CollectionsGrid: React.FC<Props> = ({
                   {/* Red VIEW NOW Button */}
                   <a
                     href={`/collections/${cat.slug}`}
-                    className="inline-block bg-[#0B1F3A] hover:bg-[#16325C] text-white px-4 py-1 rounded-[4px] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-xs transition-colors"
+                    className="inline-block bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] px-4 py-1 rounded-[4px] text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow-xs transition-colors"
                   >
                     VIEW NOW
                   </a>
@@ -222,7 +222,7 @@ export const CollectionsGrid: React.FC<Props> = ({
             />
             {bannerCollection.badge && (
               <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
-                <span className="bg-[#0B1F3A] text-white font-extrabold text-[11px] sm:text-[12px] uppercase px-3 py-1 rounded-[3px] shadow-xs tracking-wider">
+                <span className="bg-[#D4AF37] text-[#1C140C] font-extrabold text-[11px] sm:text-[12px] uppercase px-3 py-1 rounded-[3px] shadow-xs tracking-wider">
                   {bannerCollection.badge}
                 </span>
               </div>
@@ -231,7 +231,7 @@ export const CollectionsGrid: React.FC<Props> = ({
 
           <div className="pt-3.5 pb-2 text-center flex flex-col items-center w-full">
             <a href={`/collections/${bannerCollection.slug}`}>
-              <h3 className="font-['Barlow_Condensed',sans-serif] text-2xl sm:text-[28px] font-bold text-[#0B1F3A] group-hover:text-[#0B1F3A] transition-colors mb-1.5">
+              <h3 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-[28px] font-bold text-[#1C140C] group-hover:text-[#1C140C] transition-colors mb-1.5">
                 {bannerCollection.name}
               </h3>
             </a>
@@ -245,7 +245,7 @@ export const CollectionsGrid: React.FC<Props> = ({
             {/* Red VIEW NOW Button */}
             <a
               href={`/collections/${bannerCollection.slug}`}
-              className="inline-block bg-[#0B1F3A] hover:bg-[#16325C] text-white px-7 py-2 rounded-[4px] text-[11px] sm:text-[12px] font-extrabold uppercase tracking-wider shadow-xs transition-colors"
+              className="inline-block bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] px-7 py-2 rounded-[4px] text-[11px] sm:text-[12px] font-extrabold uppercase tracking-wider shadow-xs transition-colors"
             >
               VIEW NOW
             </a>

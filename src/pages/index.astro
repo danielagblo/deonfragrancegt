@@ -2,17 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import AboutStory from '../components/AboutStory.astro';
 import { HeroCarousel } from '../components/HeroCarousel';
-import { getHomepageImages, getProducts } from '../lib/db';
+import { getHomepageImages } from '../lib/db';
 import { HOMEPAGE_IMAGE_DEFAULTS, type HomepageImages } from '../lib/homepage';
-import type { Product } from '../types';
-
-let products: Product[] = [];
-
-try {
-  products = await getProducts();
-} catch (e) {
-  console.error('Error fetching homepage fragrances:', e);
-}
 
 let homeImages: HomepageImages = { ...HOMEPAGE_IMAGE_DEFAULTS };
 
@@ -22,45 +13,34 @@ try {
   console.error('Error fetching homepage images:', e);
 }
 
-if (!products.length) {
-  try {
-    const response = await fetch('https://rabbiazanduna.vercel.app/api/products');
-    if (response.ok) {
-      const data = await response.json();
-      if (Array.isArray(data)) products = data;
-    }
-  } catch (e) {
-    console.error('Error fetching published fragrances for the hero:', e);
-  }
-}
 ---
 
-<Layout title="The House of Rabbi Azanduna">
-  <HeroCarousel client:load products={products.filter((product) => product.showInHero !== false)} />
+<Layout title="Dion Fragrance">
+  <HeroCarousel client:load />
 
   <section class="pt-10 sm:pt-14 pb-4 px-3.5 sm:px-6 lg:px-8 max-w-5xl mx-auto font-['Poppins',sans-serif]">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
       <div class="mx-auto w-full max-w-xs aspect-[35/45] rounded-2xl overflow-hidden bg-white shadow-md">
         <img
-          src={homeImages.founder}
-          alt="Rabbi Micah Felix Azanduna, Founder"
-          class="w-full h-full object-cover object-center"
+          src="/profile.jpg"
+          alt="Dion Fragrance profile"
+          class="w-full h-full object-cover object-[center_20%]"
         />
       </div>
       <div class="text-center md:text-left">
-        <span class="text-xs font-bold uppercase tracking-wider text-[#0B1F3A]">Founder</span>
-        <h1 class="font-['Barlow',sans-serif] text-3xl sm:text-5xl font-extrabold text-[#0B1F3A] uppercase tracking-tight mt-3">
-          Sacred Wisdom, Bottled
+        <span class="text-xs font-bold uppercase tracking-wider text-[#1C140C]">The House</span>
+        <h1 class="font-['Cormorant_Garamond',serif] text-4xl sm:text-6xl font-medium text-[#1C140C] uppercase tracking-[0.08em] mt-3">
+          Dion Fragrance
         </h1>
-        <div class="w-16 h-1 bg-[#0B1F3A] mx-auto md:mx-0 mt-4 mb-5 sm:mb-6"></div>
-        <div class="space-y-4 text-[#0B1F3A]/80 text-xs sm:text-base leading-relaxed">
+        <div class="w-16 h-1 bg-[#D4AF37] mx-auto md:mx-0 mt-4 mb-5 sm:mb-6"></div>
+        <div class="space-y-4 text-[#1C140C]/80 text-xs sm:text-base leading-relaxed">
           <p>
-            Welcome to The House of Rabbi Azanduna—a luxury Ghanaian perfume house where ancient spiritual heritage meets haute parfumerie.
+            Welcome to Dion Fragrance, a luxury perfume house in Ghana.
           </p>
           <p>
-            Founded by Rabbi Micah Felix Azanduna, our family-owned atelier crafts fine fragrances inspired by biblical wisdom, sacred doctrines, and timeless philosophy. Operating from Ghana, we blend precious resins, rare botanicals, and rich aromatics to transform scent into a deeply personal ritual of reverence, elegance, and purpose.
+            Each bottle is an extrait de parfum, composed to feel clean, confident, and personal. From bright citrus to warm woods, the collection is made for everyday wear and evenings worth remembering.
           </p>
-          <p class="text-[#0B1F3A] font-medium">
+          <p class="text-[#1C140C] font-medium">
             Discover fragrances with soul, crafted for the extraordinary.
           </p>
         </div>

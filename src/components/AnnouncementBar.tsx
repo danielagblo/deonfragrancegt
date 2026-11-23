@@ -50,10 +50,10 @@ export const AnnouncementBar: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#0B1F3A] text-white py-1.5 sm:py-2 px-2.5 sm:px-6 sticky top-0 z-50 flex items-center justify-between shadow-xs select-none overflow-hidden">
+    <div className="bg-[#D4AF37] text-[#1C140C] py-1.5 sm:py-2 px-2.5 sm:px-6 sticky top-0 z-50 flex items-center justify-between shadow-xs select-none overflow-hidden">
       <button
         onClick={handlePrev}
-        className="text-white hover:opacity-80 transition-opacity p-1 cursor-pointer flex items-center z-10 shrink-0"
+        className="text-[#1C140C] hover:opacity-80 transition-opacity p-1 cursor-pointer flex items-center z-10 shrink-0"
         aria-label="Previous announcement"
       >
         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@ export const AnnouncementBar: React.FC = () => {
 
       <button
         onClick={handleNext}
-        className="text-white hover:opacity-80 transition-opacity p-1 cursor-pointer flex items-center z-10 shrink-0"
+        className="text-[#1C140C] hover:opacity-80 transition-opacity p-1 cursor-pointer flex items-center z-10 shrink-0"
         aria-label="Next announcement"
       >
         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

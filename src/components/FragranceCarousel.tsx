@@ -24,7 +24,7 @@ export const FragranceCarousel: React.FC<Props> = ({ products, showHeading = tru
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         <div className={`flex items-center ${showHeading ? 'justify-between' : 'justify-end'} gap-4 mb-4`}>
           {showHeading && (
-            <h2 className="font-['Barlow',sans-serif] text-2xl sm:text-3xl font-bold text-[#0B1F3A] uppercase tracking-tight">
+            <h2 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-3xl font-bold text-[#1C140C] uppercase tracking-[0.03em]">
               Fragrances
             </h2>
           )}
@@ -32,7 +32,7 @@ export const FragranceCarousel: React.FC<Props> = ({ products, showHeading = tru
             <button
               type="button"
               onClick={() => move(-1)}
-              className="w-9 h-9 rounded-full border border-[#0B1F3A] text-[#0B1F3A] hover:bg-[#0B1F3A] hover:text-white transition-colors flex items-center justify-center cursor-pointer"
+              className="w-9 h-9 rounded-full border border-[#D4AF37] text-[#1C140C] hover:bg-[#D4AF37] hover:text-[#1C140C] transition-colors flex items-center justify-center cursor-pointer"
               aria-label="Previous fragrances"
             >
               <ChevronLeft size={18} />
@@ -40,7 +40,7 @@ export const FragranceCarousel: React.FC<Props> = ({ products, showHeading = tru
             <button
               type="button"
               onClick={() => move(1)}
-              className="w-9 h-9 rounded-full border border-[#0B1F3A] text-[#0B1F3A] hover:bg-[#0B1F3A] hover:text-white transition-colors flex items-center justify-center cursor-pointer"
+              className="w-9 h-9 rounded-full border border-[#D4AF37] text-[#1C140C] hover:bg-[#D4AF37] hover:text-[#1C140C] transition-colors flex items-center justify-center cursor-pointer"
               aria-label="Next fragrances"
             >
               <ChevronRight size={18} />

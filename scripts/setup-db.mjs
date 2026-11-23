@@ -2,7 +2,7 @@ import 'dotenv/config';
 import mysql from 'mysql2/promise';
 
 /**
- * Schema definitions for Rabbi Azanduna Luxury Oud database.
+ * Schema definitions for Dion Fragrance database.
  * Uses utf8mb4 charset and InnoDB engine.
  */
 export const TABLE_SCHEMAS = [

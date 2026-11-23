@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const token = `azanduna_admin_token_${Math.floor(Date.now() / 1000)}`;
+    const token = `dion_admin_token_${Math.floor(Date.now() / 1000)}`;
 
     return new Response(
       JSON.stringify({

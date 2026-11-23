@@ -66,7 +66,7 @@ export const ProductsCatalog: React.FC<Props> = ({
             onClick={() => setSelectedCollection('all')}
             className={`px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs uppercase tracking-wider rounded-lg font-bold transition-all ${
               selectedCollection === 'all'
-                ? 'bg-[#0B1F3A] text-white'
+                ? 'bg-[#D4AF37] text-[#1C140C]'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -78,7 +78,7 @@ export const ProductsCatalog: React.FC<Props> = ({
               onClick={() => setSelectedCollection(col.slug)}
               className={`px-3 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs uppercase tracking-wider rounded-lg font-bold transition-all ${
                 selectedCollection === col.slug
-                  ? 'bg-[#0B1F3A] text-white'
+                  ? 'bg-[#D4AF37] text-[#1C140C]'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -101,7 +101,7 @@ export const ProductsCatalog: React.FC<Props> = ({
               onClick={() => setSelectedFamily(fam)}
               className={`px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs rounded-md font-semibold transition-all ${
                 selectedFamily === fam
-                  ? 'bg-[#0B1F3A] text-white'
+                  ? 'bg-[#D4AF37] text-[#1C140C]'
                   : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
               }`}
             >
@@ -113,13 +113,13 @@ export const ProductsCatalog: React.FC<Props> = ({
         {/* Right Sort */}
         <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end pt-2 md:pt-0 border-t md:border-t-0 border-gray-200">
           <span className="text-xs text-gray-500 font-medium">
-            Showing <strong className="text-[#0B1F3A]">{filteredProducts.length}</strong> fragrances
+            Showing <strong className="text-[#1C140C]">{filteredProducts.length}</strong> fragrances
           </span>
 
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-white text-gray-800 text-xs border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#0B1F3A] font-medium"
+            className="bg-white text-gray-800 text-xs border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#D4AF37] font-medium"
           >
             <option value="featured">Featured</option>
             <option value="price_asc">Price: Low to High</option>
@@ -134,13 +134,13 @@ export const ProductsCatalog: React.FC<Props> = ({
         <div className="flex items-center gap-2 mb-6 flex-wrap">
           <span className="text-xs text-gray-500 font-medium">Active:</span>
           {selectedCollection !== 'all' && (
-            <span className="inline-flex items-center gap-1 text-xs bg-gray-200 text-[#0B1F3A] px-2.5 py-0.5 rounded-full font-semibold">
+            <span className="inline-flex items-center gap-1 text-xs bg-gray-200 text-[#1C140C] px-2.5 py-0.5 rounded-full font-semibold">
               {collections.find((c) => c.slug === selectedCollection)?.name}
               <button onClick={() => setSelectedCollection('all')}><X size={12} /></button>
             </span>
           )}
           {selectedFamily !== 'all' && (
-            <span className="inline-flex items-center gap-1 text-xs bg-gray-200 text-[#0B1F3A] px-2.5 py-0.5 rounded-full font-semibold">
+            <span className="inline-flex items-center gap-1 text-xs bg-gray-200 text-[#1C140C] px-2.5 py-0.5 rounded-full font-semibold">
               {selectedFamily}
               <button onClick={() => setSelectedFamily('all')}><X size={12} /></button>
             </span>
@@ -151,7 +151,7 @@ export const ProductsCatalog: React.FC<Props> = ({
               setSelectedFamily('all');
               setSearchQuery('');
             }}
-            className="text-xs text-[#0B1F3A] underline font-bold ml-2"
+            className="text-xs text-[#1C140C] underline font-bold ml-2"
           >
             Clear All
           </button>
@@ -168,13 +168,13 @@ export const ProductsCatalog: React.FC<Props> = ({
       {/* Pagination Progress Section */}
       <div className="mt-14 mb-4 text-center flex flex-col items-center justify-center">
         <p className="text-xs sm:text-sm text-gray-600 mb-3 font-['Poppins',sans-serif]">
-          You have seen <strong className="text-[#0B1F3A] font-bold">{Math.min(visibleLimit, filteredProducts.length)}</strong> out of <strong className="text-[#0B1F3A] font-bold">{filteredProducts.length}</strong> products
+          You have seen <strong className="text-[#1C140C] font-bold">{Math.min(visibleLimit, filteredProducts.length)}</strong> out of <strong className="text-[#1C140C] font-bold">{filteredProducts.length}</strong> products
         </p>
 
         {/* Red Progress Bar */}
         <div className="w-48 sm:w-64 h-1 bg-gray-200 rounded-full overflow-hidden mb-6">
           <div
-            className="bg-[#0B1F3A] h-full rounded-full transition-all duration-300"
+            className="bg-[#D4AF37] h-full rounded-full transition-all duration-300"
             style={{
               width: `${filteredProducts.length > 0 ? (Math.min(visibleLimit, filteredProducts.length) / filteredProducts.length) * 100 : 100}%`
             }}
@@ -185,7 +185,7 @@ export const ProductsCatalog: React.FC<Props> = ({
           <button
             type="button"
             onClick={() => setVisibleLimit((prev) => prev + 6)}
-            className="bg-[#0B1F3A] hover:bg-[#16325C] text-white font-bold text-xs sm:text-sm px-8 py-3 rounded-lg shadow-xs transition-all uppercase tracking-wider font-['Barlow_Condensed',sans-serif] cursor-pointer"
+            className="bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] font-bold text-xs sm:text-sm px-8 py-3 rounded-lg shadow-xs transition-all uppercase tracking-wider font-['Barlow_Condensed',sans-serif] cursor-pointer"
           >
             Show more products
           </button>

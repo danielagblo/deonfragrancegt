@@ -66,11 +66,11 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
     <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-6 sm:py-10 font-['Poppins',sans-serif]">
       {/* Breadcrumb */}
       <nav className="text-xs uppercase text-gray-400 mb-6 sm:mb-8 flex items-center gap-1.5 sm:gap-2 font-medium overflow-x-auto no-scrollbar whitespace-nowrap">
-        <a href="/" className="hover:text-[#0B1F3A]">Home</a>
+        <a href="/" className="hover:text-[#1C140C]">Home</a>
         <span>/</span>
-        <a href="/collections" className="hover:text-[#0B1F3A]">Collections</a>
+        <a href="/collections" className="hover:text-[#1C140C]">Collections</a>
         <span>/</span>
-        <span className="text-[#0B1F3A] font-bold truncate">{product.name}</span>
+        <span className="text-[#1C140C] font-bold truncate">{product.name}</span>
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
@@ -89,7 +89,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
               className="w-full h-full object-cover object-center"
             />
             {savings && (
-              <span className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-[#0B1F3A] text-white font-extrabold text-[10px] sm:text-xs uppercase px-2.5 py-1 rounded shadow">
+              <span className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-[#D4AF37] text-[#1C140C] font-extrabold text-[10px] sm:text-xs uppercase px-2.5 py-1 rounded shadow">
                 SAVE GH₵{savings}
               </span>
             )}
@@ -102,7 +102,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                   key={idx}
                   onClick={() => setActiveImage(img)}
                   className={`w-16 h-20 sm:w-20 sm:h-24 shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
-                    activeImage === img ? 'border-[#0B1F3A] scale-105' : 'border-gray-200 opacity-60 hover:opacity-100'
+                    activeImage === img ? 'border-[#D4AF37] scale-105' : 'border-gray-200 opacity-60 hover:opacity-100'
                   }`}
                 >
                   <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
@@ -115,24 +115,21 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
         {/* Right Details */}
         <div className="space-y-5 sm:space-y-6">
           <div>
-            <h1 className="font-['Barlow',sans-serif] text-2xl sm:text-4xl font-extrabold text-[#0B1F3A] tracking-tight leading-tight">
+            <h1 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-4xl font-medium text-[#1C140C] tracking-[0.03em] leading-tight">
               {product.name}
             </h1>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#0B1F3A] mt-1">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#1C140C] mt-1">
               {product.subtitle || product.concentration}
             </p>
-            {comingSoon && (
-              <p className="mt-3 inline-block rounded-full bg-[#0B1F3A] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white">
-                Coming soon
-              </p>
-            )}
           </div>
 
           {/* Price Strip */}
           <div className="flex items-baseline gap-3 pb-5 sm:pb-6 border-b border-gray-200 flex-wrap">
-            <span className="font-['Barlow',sans-serif] text-2xl sm:text-3xl font-extrabold text-[#0B1F3A]">
-              GH₵{selectedVariant.price.toFixed(2)}
-            </span>
+            {selectedVariant.price > 0 && (
+              <span className="font-['Cormorant_Garamond',serif] text-2xl sm:text-3xl font-medium text-[#1C140C]">
+                GH₵{selectedVariant.price.toFixed(2)}
+              </span>
+            )}
             {product.compareAtPrice && Number(product.compareAtPrice) > selectedVariant.price ? (
               <span className="text-sm sm:text-base text-gray-400 line-through">
                 GH₵{Number(product.compareAtPrice).toFixed(2)}
@@ -146,15 +143,11 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
               const isLowStock = !comingSoon && !isOutOfStock && currentStock <= 10;
 
               if (comingSoon) {
-                return (
-                  <span className="text-xs bg-[#0B1F3A] text-white font-bold px-2.5 py-0.5 rounded">
-                    Coming Soon
-                  </span>
-                );
+                return null;
               }
               if (isOutOfStock) {
                 return (
-                  <span className="text-xs bg-[#e7eef6] text-[#0B1F3A] font-bold px-2.5 py-0.5 rounded">
+                  <span className="text-xs bg-[#e7eef6] text-[#1C140C] font-bold px-2.5 py-0.5 rounded">
                     Out of Stock
                   </span>
                 );
@@ -176,23 +169,25 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
             })()}
           </div>
 
-          <p className="text-gray-700 text-sm leading-relaxed font-light">
+          <p className="text-gray-700 text-sm leading-relaxed font-light whitespace-pre-line">
             {product.description}
           </p>
 
           {/* Size Variant Selector */}
           {product.variants && product.variants.length > 0 && (
             <div className="space-y-2 pt-2">
-              <label className="text-xs uppercase font-bold text-gray-800 block">
-                Select Size
+              <label className="text-[11px] uppercase tracking-[0.18em] font-semibold text-[#1C140C]/60 block">
+                Volume
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
+              <div className="flex flex-wrap gap-2">
                 {product.variants.map((v) => {
                   const vStock = v.stockQuantity !== undefined
                     ? Number(v.stockQuantity)
                     : (product.stockQuantity !== undefined ? Number(product.stockQuantity) : 50);
                   const isVarInStock = v.inStock !== false && product.inStock !== false && vStock > 0;
                   const isSelected = selectedVariant.size === v.size;
+                  const ml = String(v.size).match(/(\d+(?:\.\d+)?)\s*ml/i);
+                  const volume = ml ? `${Number(ml[1])} ml` : v.size;
 
                   return (
                     <button
@@ -203,29 +198,13 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                           setQuantity(vStock);
                         }
                       }}
-                      className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all ${
+                      className={`rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors cursor-pointer ${
                         isSelected
-                          ? 'bg-[#0B1F3A] text-white border-[#0B1F3A] font-bold shadow-sm'
-                          : 'bg-white text-gray-800 border-gray-300 hover:border-gray-400'
-                      }`}
+                          ? 'bg-[#1C140C] text-white'
+                          : 'bg-white text-[#1C140C]/70 ring-1 ring-[#1C140C]/15 hover:text-[#1C140C]'
+                      } ${!isVarInStock ? 'opacity-40' : ''}`}
                     >
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-xs block truncate">{v.size}</span>
-                        {comingSoon ? null : !isVarInStock ? (
-                          <span className="text-[9px] font-bold text-red-500 uppercase shrink-0">Sold Out</span>
-                        ) : vStock <= 10 ? (
-                          <span className={`text-[9px] font-bold uppercase shrink-0 ${isSelected ? 'text-amber-300' : 'text-amber-600'}`}>
-                            Only {vStock} left
-                          </span>
-                        ) : (
-                          <span className={`text-[9px] font-medium shrink-0 ${isSelected ? 'text-emerald-300' : 'text-emerald-700'}`}>
-                            {vStock} units
-                          </span>
-                        )}
-                      </div>
-                      <span className="font-['Barlow',sans-serif] font-bold text-xs sm:text-sm block mt-0.5">
-                        GH₵{v.price.toFixed(2)}
-                      </span>
+                      {volume}
                     </button>
                   );
                 })}
@@ -256,15 +235,15 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       disabled={quantity <= 1 || cannotBuy}
-                      className="px-2.5 sm:px-3 py-2 text-gray-600 hover:text-[#0B1F3A] font-bold disabled:opacity-30"
+                      className="px-2.5 sm:px-3 py-2 text-gray-600 hover:text-[#1C140C] font-bold disabled:opacity-30"
                     >
                       -
                     </button>
-                    <span className="px-2 sm:px-3 font-bold text-[#0B1F3A] text-sm">{quantity}</span>
+                    <span className="px-2 sm:px-3 font-bold text-[#1C140C] text-sm">{quantity}</span>
                     <button
                       onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
                       disabled={quantity >= maxQty || cannotBuy}
-                      className="px-2.5 sm:px-3 py-2 text-gray-600 hover:text-[#0B1F3A] font-bold disabled:opacity-30"
+                      className="px-2.5 sm:px-3 py-2 text-gray-600 hover:text-[#1C140C] font-bold disabled:opacity-30"
                     >
                       +
                     </button>
@@ -278,7 +257,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                         ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
                         : isAdded
                         ? 'bg-emerald-600 text-white cursor-pointer'
-                        : 'bg-[#0B1F3A] hover:bg-[#16325C] text-white shadow-md cursor-pointer'
+                        : 'bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] shadow-md cursor-pointer'
                     }`}
                   >
                     {comingSoon ? (
@@ -299,22 +278,24 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                   </button>
                 </div>
 
-                <button
-                  onClick={() => {
-                    if (cannotBuy) return;
-                    cartStore.addItem(product, selectedVariant, quantity);
-                    cartStore.openDrawer();
-                  }}
-                  disabled={cannotBuy}
-                  className={`w-full py-3 font-extrabold text-xs uppercase tracking-widest rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                    cannotBuy
-                      ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
-                      : 'bg-[#0B1F3A] hover:bg-[#16325C] text-white cursor-pointer'
-                  }`}
-                >
-                  <Sparkles size={15} />
-                  <span>{comingSoon ? 'Coming Soon' : !isOutOfStock ? 'Buy Now with Paystack' : 'Currently Out of Stock'}</span>
-                </button>
+                {!comingSoon && (
+                  <button
+                    onClick={() => {
+                      if (cannotBuy) return;
+                      cartStore.addItem(product, selectedVariant, quantity);
+                      cartStore.openDrawer();
+                    }}
+                    disabled={cannotBuy}
+                    className={`w-full py-3 font-extrabold text-xs uppercase tracking-widest rounded-lg transition-colors flex items-center justify-center gap-2 ${
+                      cannotBuy
+                        ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+                        : 'bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] cursor-pointer'
+                    }`}
+                  >
+                    <Sparkles size={15} />
+                    <span>{!isOutOfStock ? 'Buy Now with Paystack' : 'Currently Out of Stock'}</span>
+                  </button>
+                )}
               </div>
             );
           })()}
@@ -323,19 +304,19 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
           <div className="grid grid-cols-1 min-[480px]:grid-cols-3 gap-2.5 sm:gap-3 pt-5 sm:pt-6 border-t border-gray-200 text-xs text-gray-600 font-medium">
             {product.highlightOne !== '' && (
               <div className="flex items-center gap-2">
-                <Sparkles size={18} className="text-[#0B1F3A] shrink-0" />
+                <Sparkles size={18} className="text-[#1C140C] shrink-0" />
                 <span>{product.highlightOne || 'Authentic Aged Oud'}</span>
               </div>
             )}
             {product.highlightTwo !== '' && (
               <div className="flex items-center gap-2">
-                <ShieldCheck size={18} className="text-[#0B1F3A] shrink-0" />
+                <ShieldCheck size={18} className="text-[#1C140C] shrink-0" />
                 <span>{product.highlightTwo || 'Paystack Secured'}</span>
               </div>
             )}
             {product.highlightThree !== '' && (
               <div className="flex items-center gap-2">
-                <RefreshCw size={18} className="text-[#0B1F3A] shrink-0" />
+                <RefreshCw size={18} className="text-[#1C140C] shrink-0" />
                 <span>{product.highlightThree || '100% Pure Perfume Oil'}</span>
               </div>
             )}
@@ -343,7 +324,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
 
           {/* Care, Application & Precautions Accordion (Option 1) */}
           <div className="pt-6 border-t border-gray-200 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1F3A]">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#1C140C]">
               Application & Fragrance Care
             </h4>
 
@@ -352,16 +333,16 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'apply' ? null : 'apply')}
-                className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-xs sm:text-sm text-[#0B1F3A] hover:bg-gray-100/70 transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-xs sm:text-sm text-[#1C140C] hover:bg-gray-100/70 transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-2.5">
-                  <Droplets size={16} className="text-[#0B1F3A]" />
+                  <Droplets size={16} className="text-[#1C140C]" />
                   <span>How & Where to Apply</span>
                 </span>
                 <ChevronDown
                   size={16}
                   className={`text-gray-400 transition-transform duration-200 ${
-                    openSection === 'apply' ? 'rotate-180 text-[#0B1F3A]' : ''
+                    openSection === 'apply' ? 'rotate-180 text-[#1C140C]' : ''
                   }`}
                 />
               </button>
@@ -379,16 +360,16 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'precautions' ? null : 'precautions')}
-                className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-xs sm:text-sm text-[#0B1F3A] hover:bg-gray-100/70 transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-xs sm:text-sm text-[#1C140C] hover:bg-gray-100/70 transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-2.5">
-                  <AlertCircle size={16} className="text-[#0B1F3A]" />
+                  <AlertCircle size={16} className="text-[#1C140C]" />
                   <span>Precautions & Safe Use</span>
                 </span>
                 <ChevronDown
                   size={16}
                   className={`text-gray-400 transition-transform duration-200 ${
-                    openSection === 'precautions' ? 'rotate-180 text-[#0B1F3A]' : ''
+                    openSection === 'precautions' ? 'rotate-180 text-[#1C140C]' : ''
                   }`}
                 />
               </button>
@@ -396,19 +377,19 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                 <div className="px-4 pb-4 pt-2 text-xs sm:text-sm text-gray-600 leading-relaxed border-t border-gray-200/60 bg-white">
                   <ul className="space-y-2 list-none">
                     <li className="flex items-start gap-2">
-                      <span className="font-semibold text-[#0B1F3A] shrink-0">• Distance:</span>
+                      <span className="font-semibold text-[#1C140C] shrink-0">• Distance:</span>
                       <span>Spray from roughly 30 cm (12 inches) away to ensure an even mist.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="font-semibold text-[#0B1F3A] shrink-0">• Fabrics:</span>
+                      <span className="font-semibold text-[#1C140C] shrink-0">• Fabrics:</span>
                       <span>Avoid direct contact with light or delicate textiles to prevent staining.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="font-semibold text-[#0B1F3A] shrink-0">• Sensitive Areas:</span>
+                      <span className="font-semibold text-[#1C140C] shrink-0">• Sensitive Areas:</span>
                       <span>Do not spray on irritated skin, eyes, or mucous membranes.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="font-semibold text-[#0B1F3A] shrink-0">• Patch Test:</span>
+                      <span className="font-semibold text-[#1C140C] shrink-0">• Patch Test:</span>
                       <span>If you have sensitive skin, test a tiny amount on the inside of your wrist before full application.</span>
                     </li>
                   </ul>
@@ -421,16 +402,16 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'storage' ? null : 'storage')}
-                className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-xs sm:text-sm text-[#0B1F3A] hover:bg-gray-100/70 transition-colors cursor-pointer"
+                className="w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-xs sm:text-sm text-[#1C140C] hover:bg-gray-100/70 transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-2.5">
-                  <SunMedium size={16} className="text-[#0B1F3A]" />
+                  <SunMedium size={16} className="text-[#1C140C]" />
                   <span>Storage Tips</span>
                 </span>
                 <ChevronDown
                   size={16}
                   className={`text-gray-400 transition-transform duration-200 ${
-                    openSection === 'storage' ? 'rotate-180 text-[#0B1F3A]' : ''
+                    openSection === 'storage' ? 'rotate-180 text-[#1C140C]' : ''
                   }`}
                 />
               </button>
@@ -449,16 +430,16 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
       {/* Fragrance Notes Breakdown */}
       {product.notes && product.notes.length > 0 && (
         <div className="mt-12 sm:mt-16 bg-gray-50 border border-gray-200 rounded-2xl p-5 sm:p-8">
-          <h3 className="font-['Barlow',sans-serif] text-xl sm:text-2xl font-bold text-[#0B1F3A] uppercase mb-4 sm:mb-6">
+          <h3 className="font-['Cormorant_Garamond',serif] text-xl sm:text-2xl font-bold text-[#1C140C] uppercase mb-4 sm:mb-6">
             Fragrance Notes & Accord
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {product.notes.map((note, idx) => (
               <div key={idx} className="bg-white border border-gray-200 p-4 sm:p-5 rounded-xl">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#0B1F3A] block mb-1">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#1C140C] block mb-1">
                   {note.layer} notes
                 </span>
-                <h4 className="font-bold text-[#0B1F3A] text-sm mb-1">{note.noteName}</h4>
+                <h4 className="font-bold text-[#1C140C] text-sm mb-1">{note.noteName}</h4>
                 {note.description && (
                   <p className="text-xs text-gray-500 font-light">{note.description}</p>
                 )}
@@ -471,12 +452,14 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
       {/* Recommended Pairings */}
       {relatedProducts && relatedProducts.length > 0 && (
         <div className="mt-12 sm:mt-16 border-t border-gray-200 pt-8 sm:pt-12">
-          <h3 className="font-['Barlow',sans-serif] text-xl sm:text-2xl font-bold text-[#0B1F3A] uppercase mb-6 sm:mb-8 text-center">
+          <h3 className="font-['Cormorant_Garamond',serif] text-xl sm:text-2xl font-bold text-[#1C140C] uppercase mb-6 sm:mb-8 text-center">
             You May Also Like
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
+          <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-5 gap-y-8">
             {relatedProducts.slice(0, 3).map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <div key={p.id} className="w-full max-w-sm sm:w-[calc((100%-2.5rem)/3)] sm:max-w-none">
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         </div>

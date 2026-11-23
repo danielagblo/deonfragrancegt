@@ -12,17 +12,19 @@ interface Props {
 }
 
 const {
-  title = "Rabbi Azanduna | Artisanal Pure Oud Perfume Oils & Sprays",
+  title = "Dion Fragrance | Extrait De Parfum",
   description = "Specialists in infusing rich botanical perfume oils with our signature aged Oud to deliver an unforgettable, long-lasting aroma."
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth bg-white text-[#0B1F3A]">
+<html lang="en" class="scroll-smooth bg-[#FBF7F1] text-[#1C140C]">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon.png?v=2" />
+    <link rel="apple-touch-icon" href="/favicon.png?v=2" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -35,9 +37,9 @@ const {
     <!-- Google Fonts Preconnect & Stylesheets (Montserrat, Barlow, Barlow Condensed, Barlow Semi Condensed, Oswald, Poppins) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow+Semi+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700;800;900&family=Montserrat:wght@500;600;700;800&family=Oswald:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow+Semi+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@500;600;700;800&family=Oswald:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body class="min-h-screen flex flex-col antialiased bg-white text-[#0B1F3A] selection:bg-[#0B1F3A] selection:text-white font-['Poppins',sans-serif]">
+  <body class="min-h-screen flex flex-col antialiased bg-[#FBF7F1] text-[#1C140C] selection:bg-[#D4AF37] selection:text-[#1C140C] font-['Poppins',sans-serif]">
     <!-- Red Top Announcement Bar -->
     <AnnouncementBar client:load />
 
@@ -59,7 +61,7 @@ const {
     <Footer />
 
     <a
-      href="https://wa.me/233555181555?text=Hello%2C%20The%20House%20of%20Rabbi%20Azanduna."
+      href="https://wa.me/233555181555?text=Hello%2C%20Dion%20Fragrance."
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"

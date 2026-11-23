@@ -24,7 +24,7 @@ function SearchField({
     <form action="/collections" method="get" role="search" className={className}>
       <label htmlFor={id} className="sr-only">Search fragrances</label>
       <div className="relative">
-        <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#0B1F3A]/45" />
+        <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#1C140C]/45" />
         <input
           id={id}
           type="search"
@@ -32,7 +32,7 @@ function SearchField({
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder="Search fragrances"
-          className="h-9 w-full rounded-full border border-[#0B1F3A]/15 bg-[#0B1F3A]/[0.04] pl-9 pr-3 text-sm text-[#0B1F3A] placeholder:text-[#0B1F3A]/40 outline-none focus:border-[#0B1F3A] focus:bg-white"
+          className="h-9 w-full rounded-full border border-[#D4AF37]/15 bg-[#1C140C]/[0.04] pl-9 pr-3 text-sm text-[#1C140C] placeholder:text-[#1C140C]/40 outline-none focus:border-[#D4AF37] focus:bg-white"
         />
       </div>
     </form>
@@ -59,19 +59,19 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="w-full bg-white z-40 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-[64px] flex items-center gap-3 sm:gap-6">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 flex items-center gap-3 sm:gap-6">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 text-[#0B1F3A] cursor-pointer rounded-md"
+          className="lg:hidden p-2 text-[#1C140C] cursor-pointer rounded-md"
           aria-label="Toggle Menu"
         >
           {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <a href="/" className="shrink-0 flex items-center gap-2" aria-label="The House of Rabbi Azanduna">
-          <img src="/logo.png" alt="" className="h-10 sm:h-12 w-auto" />
-          <span className="hidden min-[480px]:inline font-['Montserrat',sans-serif] text-[15px] sm:text-[20px] font-bold tracking-[0.14em] sm:tracking-[0.18em] text-[#0B1F3A] uppercase">
-            Rabbi Azanduna
+        <a href="/" className="shrink-0 flex items-center gap-2">
+          <img src="/favicon.png" alt="Dion Fragrance" className="h-11 w-11 sm:h-12 sm:w-12 rounded-md" />
+          <span className="font-['Cormorant_Garamond',serif] text-[26px] sm:text-[32px] font-medium uppercase tracking-[0.12em] text-[#1C140C] leading-none">
+            Dion Fragrance
           </span>
         </a>
 
@@ -82,7 +82,7 @@ export const Navbar: React.FC = () => {
               <a
                 key={link.href}
                 href={link.href}
-                className={active ? 'text-[#0B1F3A] underline underline-offset-4' : 'text-[#0B1F3A]/75 hover:text-[#0B1F3A]'}
+                className={active ? 'text-[#1C140C] underline decoration-[#D4AF37] decoration-2 underline-offset-4' : 'text-[#1C140C]/70 hover:text-[#1C140C]'}
               >
                 {link.label}
               </a>
@@ -99,11 +99,11 @@ export const Navbar: React.FC = () => {
 
         <button
           onClick={() => cartStore.openDrawer()}
-          className="ml-auto lg:ml-0 p-2 text-[#0B1F3A] relative cursor-pointer"
+          className="ml-auto lg:ml-0 p-2 text-[#1C140C] relative cursor-pointer"
           aria-label="Shopping Bag"
         >
           <ShoppingBag size={22} strokeWidth={1.5} />
-          <span className="absolute top-0.5 right-0.5 bg-[#0B1F3A] text-white text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center">
+          <span className="absolute top-0.5 right-0.5 bg-[#D4AF37] text-[#1C140C] text-[10px] font-bold w-[18px] h-[18px] rounded-full flex items-center justify-center">
             {itemCount}
           </span>
         </button>
@@ -118,7 +118,7 @@ export const Navbar: React.FC = () => {
       </div>
 
       {mobileMenuOpen && (
-        <nav className="lg:hidden border-t border-gray-200 px-5 py-3 font-['Barlow_Condensed',sans-serif] text-xl font-bold uppercase text-[#0B1F3A]">
+        <nav className="lg:hidden border-t border-gray-200 px-5 py-3 font-['Barlow_Condensed',sans-serif] text-xl font-bold uppercase text-[#1C140C]">
           {links.map((link) => (
             <a
               key={link.href}

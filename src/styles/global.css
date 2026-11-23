@@ -2,22 +2,23 @@
 
 @layer base {
   :root {
-    --color-brand-navy: #0B1F3A;
-    --color-brand-navy-hover: #16325C;
-    --color-dark: #0B1F3A;
-    --color-light-bg: #f8f9fa;
+    --color-brand: #D4AF37;
+    --color-brand-ink: #1C140C;
+    --color-brand-hover: #C49B2A;
+    --color-light-bg: #FBF7F1;
   }
 
   body {
-    background-color: #ffffff;
-    color: #0B1F3A;
+    background-color: #FBF7F1;
+    color: #1C140C;
     font-family: 'Poppins', system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-heading {
-    font-family: 'Barlow Condensed', 'Barlow', sans-serif;
-    font-weight: 700;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: 0.03em;
   }
 }
 
@@ -31,11 +32,11 @@
 }
 
 .brand-red-bg {
-  background-color: #0B1F3A;
+  background-color: #D4AF37;
 }
 
 .brand-red-text {
-  color: #0B1F3A;
+  color: #1C140C;
 }
 
 .no-scrollbar {

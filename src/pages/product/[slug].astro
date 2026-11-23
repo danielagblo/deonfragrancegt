@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { ProductDetailView } from '../../components/ProductDetailView';
 import { getProductBySlug, getProducts } from '../../lib/db';
+import { findHouseFragrance } from '../../lib/catalog';
 
 const { slug } = Astro.params;
 
@@ -15,6 +16,10 @@ try {
   products = await getProducts();
 } catch (e) {
   console.error('Error fetching product for SSR:', e);
+}
+
+if (!product && slug) {
+  product = findHouseFragrance(slug);
 }
 
 if (!product) {
@@ -33,7 +38,7 @@ const related = products.filter(
 );
 ---
 
-<Layout title={`${product.name} | Rabbi Azanduna`}>
+<Layout title={`${product.name} | Dion Fragrance`}>
   <ProductDetailView
     client:load
     product={product}

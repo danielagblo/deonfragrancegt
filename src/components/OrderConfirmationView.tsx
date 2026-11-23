@@ -17,7 +17,7 @@ export const OrderConfirmationView: React.FC = () => {
 
     // Load any saved order info from sessionStorage as initial state
     try {
-      const stored = sessionStorage.getItem('azanduna_last_order');
+      const stored = sessionStorage.getItem('dion_last_order');
       if (stored) {
         const parsed = JSON.parse(stored);
         setOrderDetails(parsed);
@@ -62,7 +62,7 @@ export const OrderConfirmationView: React.FC = () => {
     const customer = orderDetails?.customerName ? `👤 *Customer:* ${orderDetails.customerName}\n` : '';
     const total = orderDetails?.totalAmount ? `💰 *Amount Paid:* GH₵${Number(orderDetails.totalAmount).toFixed(2)}\n` : '';
 
-    return `👑 *RABBI AZANDUNA - ORDER PROOF OF PAYMENT*
+    return `👑 *DION FRAGRANCE - ORDER PROOF OF PAYMENT*
 
 📋 *Order Reference:* ${reference}
 ${customer}${total}🛡️ *Payment Status:* Verified via Paystack
@@ -71,7 +71,7 @@ ${customer}${total}🛡️ *Payment Status:* Verified via Paystack
 ${itemsText ? `🛍️ *Fragrances Ordered:*\n${itemsText}\n\n` : ''}✅ *Please find my payment confirmation attached for dispatch & delivery processing.*
 
 Thank you!
-Rabbi Azanduna Luxury Fragrances`;
+Dion Fragrance`;
   };
 
   const handleShareWhatsApp = () => {
@@ -102,11 +102,11 @@ Rabbi Azanduna Luxury Fragrances`;
         ✓ Order Confirmed &amp; Payment Secured
       </div>
 
-      <h1 className="font-['Barlow',sans-serif] text-2xl sm:text-4xl lg:text-5xl font-extrabold text-[#0B1F3A] uppercase tracking-tight mb-2 sm:mb-3">
+      <h1 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-4xl lg:text-5xl font-medium text-[#1C140C] uppercase tracking-[0.03em] mb-2 sm:mb-3">
         Thank You for Your Order
       </h1>
 
-      <div className="w-14 h-1 bg-[#0B1F3A] mx-auto mb-4"></div>
+      <div className="w-14 h-1 bg-[#D4AF37] mx-auto mb-4"></div>
 
       <p className="text-gray-600 text-xs sm:text-sm font-normal max-w-lg mx-auto leading-relaxed mb-6 sm:mb-8">
         Your order has been safely placed and is now being packaged with utmost care. Share your proof on WhatsApp below for fast dispatch confirmation!
@@ -122,7 +122,7 @@ Rabbi Azanduna Luxury Fragrances`;
               </svg>
             </div>
             <div>
-              <h3 className="font-['Barlow',sans-serif] font-bold text-base sm:text-lg text-[#0B1F3A] uppercase tracking-tight leading-tight">
+              <h3 className="font-['Cormorant_Garamond',serif] font-bold text-base sm:text-lg text-[#1C140C] uppercase tracking-[0.03em] leading-tight">
                 Send Proof to WhatsApp
               </h3>
               <p className="text-[11px] text-gray-600">
@@ -139,18 +139,18 @@ Rabbi Azanduna Luxury Fragrances`;
         <div className="bg-white border border-gray-200/90 rounded-xl p-3.5 sm:p-4 text-xs font-mono space-y-1.5 shadow-2xs text-gray-800">
           <div className="flex justify-between">
             <span className="text-gray-500 font-sans font-bold uppercase text-[10px]">Reference:</span>
-            <span className="font-bold text-[#0B1F3A]">{reference}</span>
+            <span className="font-bold text-[#1C140C]">{reference}</span>
           </div>
           {orderDetails?.customerName && (
             <div className="flex justify-between">
               <span className="text-gray-500 font-sans font-bold uppercase text-[10px]">Customer:</span>
-              <span className="font-semibold text-[#0B1F3A]">{orderDetails.customerName}</span>
+              <span className="font-semibold text-[#1C140C]">{orderDetails.customerName}</span>
             </div>
           )}
           {orderDetails?.totalAmount && (
             <div className="flex justify-between">
               <span className="text-gray-500 font-sans font-bold uppercase text-[10px]">Total Paid:</span>
-              <span className="font-bold text-[#0B1F3A] font-['Barlow',sans-serif] text-sm">
+              <span className="font-bold text-[#1C140C] font-['Cormorant_Garamond',serif] text-sm">
                 GH₵{Number(orderDetails.totalAmount).toFixed(2)}
               </span>
             </div>
@@ -199,7 +199,7 @@ Rabbi Azanduna Luxury Fragrances`;
       <div className="bg-neutral-50 border border-gray-200 rounded-2xl p-4 sm:p-6 mb-8 text-left shadow-xs space-y-3.5 text-xs sm:text-sm">
         <div className="flex justify-between items-center gap-2 pb-3 border-b border-gray-200/80">
           <span className="text-gray-500 uppercase font-bold text-[10px] sm:text-[11px] tracking-wider shrink-0">Order Reference</span>
-          <span className="font-mono font-bold text-[#0B1F3A] bg-white px-2.5 py-1 rounded border border-gray-200 text-xs break-all text-right">
+          <span className="font-mono font-bold text-[#1C140C] bg-white px-2.5 py-1 rounded border border-gray-200 text-xs break-all text-right">
             {reference}
           </span>
         </div>
@@ -214,7 +214,7 @@ Rabbi Azanduna Luxury Fragrances`;
 
         <div className="flex justify-between items-center">
           <span className="text-gray-500 uppercase font-bold text-[11px] tracking-wider">Processing Time</span>
-          <span className="text-[#0B1F3A] font-semibold">Same Day Dispatch (Within 24 Hours)</span>
+          <span className="text-[#1C140C] font-semibold">Same Day Dispatch (Within 24 Hours)</span>
         </div>
       </div>
 
@@ -222,7 +222,7 @@ Rabbi Azanduna Luxury Fragrances`;
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
         <a
           href="/collections"
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#0B1F3A] hover:bg-[#16325C] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md cursor-pointer"
         >
           <ShoppingBag size={15} />
           <span>Continue Exploring</span>

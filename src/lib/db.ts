@@ -3,6 +3,7 @@ import mysql from 'mysql2/promise';
 import type { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import type { Collection, Product, FragranceNote, ProductVariant, Review, Order, OrderItem, BlogPost, FAQ, NewsletterSubscriber } from '../types';
 import { HOMEPAGE_IMAGE_DEFAULTS, type HomepageImageKey, type HomepageImages } from './homepage';
+import { appendHouseFragrances, findHouseFragrance } from './catalog';
 
 let pool: mysql.Pool | null = null;
 let heroColumnReady = false;
@@ -392,6 +393,15 @@ export interface ProductFilter {
 }
 
 export async function getProducts(filter: ProductFilter = {}): Promise<Product[]> {
+  try {
+    return appendHouseFragrances(await loadProductsFromDatabase(filter), filter);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    return appendHouseFragrances([], filter);
+  }
+}
+
+async function loadProductsFromDatabase(filter: ProductFilter = {}): Promise<Product[]> {
   await ensureHeroColumn();
   await ensureDetailColumns();
   await ensureComingSoonColumn();
@@ -498,6 +508,15 @@ export async function getProducts(filter: ProductFilter = {}): Promise<Product[]
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
+  try {
+    return await loadProductBySlug(slug);
+  } catch (err) {
+    console.error('Error fetching product:', err);
+    return findHouseFragrance(slug);
+  }
+}
+
+async function loadProductBySlug(slug: string): Promise<Product | null> {
   await ensureDetailColumns();
   await ensureComingSoonColumn();
   const db = getPool();
@@ -505,7 +524,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     'SELECT p.*, c.name as collection_name, c.slug as collection_slug FROM products p LEFT JOIN collections c ON p.collection_id = c.id WHERE p.slug = ? LIMIT 1',
     [slug]
   );
-  if (!rows || rows.length === 0) return null;
+  if (!rows || rows.length === 0) return findHouseFragrance(slug);
 
   const product = mapProduct(rows[0]);
   if (rows[0].collection_name) {
@@ -1143,7 +1162,7 @@ export function checkAdminAuth(authHeader: string | null | undefined, queryToken
   const token = authHeader || queryToken;
   if (!token) return false;
   const clean = token.replace(/^Bearer\s+/i, '').trim();
-  return clean.length >= 10 && clean.startsWith('azanduna_admin_token_');
+  return clean.length >= 10 && clean.startsWith('dion_admin_token_');
 }
 
 export function verifyAdminPassword(password: string): boolean {

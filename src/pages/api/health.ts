@@ -6,7 +6,7 @@ export const GET: APIRoute = async () => {
   return new Response(
     JSON.stringify({
       status: 'healthy',
-      service: 'Rabbi Azanduna Astro Server',
+      service: 'Dion Fragrance Astro Server',
       version: '1.0.0',
       timestamp: new Date().toISOString(),
     }),

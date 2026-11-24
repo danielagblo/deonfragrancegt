@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import type { FAQ } from '../types';
 import { getFaqs } from '../lib/db';
+import { HOUSE_FAQS } from '../lib/faqs';
 
 let faqs: FAQ[] = [];
 
@@ -11,8 +12,12 @@ try {
   console.error('Error fetching faqs for SSR:', e);
 }
 
+if (!faqs.length) {
+  faqs = HOUSE_FAQS;
+}
+
 // Group FAQs by category in order
-const categoryOrder = ["Order Enquiries", "Shipping issues", "Returns & Product Care"];
+const categoryOrder = ["The Fragrance", "Order Enquiries", "Shipping issues", "Returns & Product Care"];
 const groupedFaqs: Record<string, FAQ[]> = {};
 
 faqs.forEach((item) => {

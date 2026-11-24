@@ -173,6 +173,27 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
             {product.description}
           </p>
 
+          <div className="border border-gray-200 rounded-2xl overflow-hidden">
+            <h2 className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1C140C]/60 bg-gray-50">
+              Details
+            </h2>
+            <dl className="divide-y divide-gray-200 text-sm">
+              {[
+                ['Concentration', product.concentration],
+                ['Volume', (selectedVariant.size || '30ml').replace(/(\d+(?:\.\d+)?)\s*ml/i, '$1 ml')],
+                ['Scent', product.scentFamily || product.subtitle],
+                ['For', product.gender],
+                ['Sillage', product.sillage],
+                ['Longevity', product.longevity],
+              ].filter(([, value]) => value).map(([label, value]) => (
+                <div key={label} className="grid grid-cols-[8.5rem_1fr] gap-3 px-4 py-3">
+                  <dt className="text-[#1C140C]/55">{label}</dt>
+                  <dd className="text-[#1C140C] font-medium">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
           {/* Size Variant Selector */}
           {product.variants && product.variants.length > 0 && (
             <div className="space-y-2 pt-2">

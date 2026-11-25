@@ -42,6 +42,45 @@ export interface PaystackVerifyResponse {
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || '';
 const PAYSTACK_BASE_URL = 'https://api.paystack.co';
 
+function timingSafeEqualHex(expected: string, actual: string): boolean {
+  const a = expected.toLowerCase();
+  const b = actual.toLowerCase();
+  if (a.length !== b.length) return false;
+
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
+export async function verifyPaystackWebhookSignature(
+  rawBody: string,
+  signature: string | null
+): Promise<boolean> {
+  if (!PAYSTACK_SECRET_KEY) {
+    console.warn('[Paystack] No PAYSTACK_SECRET_KEY set; accepting unverified webhook in simulated mode.');
+    return true;
+  }
+
+  if (!signature) return false;
+
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(PAYSTACK_SECRET_KEY),
+    { name: 'HMAC', hash: 'SHA-512' },
+    false,
+    ['sign']
+  );
+  const signatureBuffer = await crypto.subtle.sign('HMAC', key, encoder.encode(rawBody));
+  const expected = Array.from(new Uint8Array(signatureBuffer))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+
+  return timingSafeEqualHex(expected, signature);
+}
+
 export async function initializeTransaction(req: InitPaymentRequest): Promise<PaystackInitResponse> {
   if (!PAYSTACK_SECRET_KEY) {
     console.log('[Paystack] No PAYSTACK_SECRET_KEY set. Returning simulated test payment authorization.');

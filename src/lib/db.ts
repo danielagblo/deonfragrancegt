@@ -62,11 +62,17 @@ async function ensureHeroColumn() {
 
 export function getPool(): mysql.Pool {
   if (!pool) {
-    const host = process.env.DB_HOST || 'sql12.freesqldatabase.com';
-    const user = process.env.DB_USER || 'sql12837329';
-    const password = process.env.DB_PASS || 'gzJ4lKcQaF';
-    const database = process.env.DB_NAME || 'sql12837329';
+    const host = process.env.DB_HOST;
+    const user = process.env.DB_USER;
+    const password = process.env.DB_PASS;
+    const database = process.env.DB_NAME;
     const port = Number(process.env.DB_PORT) || 3306;
+
+    if (!host || !user || !password || !database) {
+      throw new Error(
+        'Database is not configured. Set DB_HOST, DB_USER, DB_PASS and DB_NAME in the environment.'
+      );
+    }
 
     pool = mysql.createPool({
       host,

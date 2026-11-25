@@ -8,10 +8,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "node ./dist/server/entry.mjs",
-    "build": "astro build",
+    "build": "astro build && node scripts/run-full-setup.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "db:setup": "node scripts/setup-db.mjs",
+    "db:full-setup": "node scripts/run-full-setup.mjs",
     "db:migrate": "node scripts/migrate-db.mjs"
   },
   "dependencies": {

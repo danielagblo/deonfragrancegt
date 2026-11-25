@@ -7,7 +7,7 @@ export const PUT: APIRoute = async ({ params, request, url }) => {
   const authHeader = request.headers.get('Authorization');
   const token = url.searchParams.get('token');
 
-  if (!checkAdminAuth(authHeader, token)) {
+  if (!(await checkAdminAuth(authHeader, token))) {
     return new Response(
       JSON.stringify({ error: 'Unauthorized: Admin authorization token required' }),
       { status: 401, headers: { 'Content-Type': 'application/json' } }
@@ -43,7 +43,7 @@ export const DELETE: APIRoute = async ({ params, request, url }) => {
   const authHeader = request.headers.get('Authorization');
   const token = url.searchParams.get('token');
 
-  if (!checkAdminAuth(authHeader, token)) {
+  if (!(await checkAdminAuth(authHeader, token))) {
     return new Response(
       JSON.stringify({ error: 'Unauthorized: Admin authorization token required' }),
       { status: 401, headers: { 'Content-Type': 'application/json' } }

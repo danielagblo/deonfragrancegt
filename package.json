@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "node ./dist/server/entry.mjs",
-    "build": "astro build && node scripts/run-full-setup.mjs",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "db:setup": "node scripts/setup-db.mjs",

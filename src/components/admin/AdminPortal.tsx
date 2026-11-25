@@ -8,7 +8,7 @@ import {
   ShoppingBag, Plus, Edit2, Trash2, CheckCircle2, AlertCircle, 
   ExternalLink, Search, DollarSign, TrendingUp, RefreshCw, X,
   Filter, Tag, ArrowRight, BookOpen, HelpCircle, FileText,
-  Upload, Image as ImageIcon, Mail
+  Upload, Image as ImageIcon, Mail, ShieldCheck
 } from 'lucide-react';
 
 interface ImageUploadFieldProps {
@@ -208,7 +208,14 @@ export const AdminPortal: React.FC = () => {
   const [loginError, setLoginError] = useState<string>('');
   const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
 
-  const [activeTab, setActiveTab] = useState<'products' | 'hero' | 'collections' | 'blogs' | 'faqs' | 'orders' | 'newsletter' | 'overview'>('hero');
+  const [currentPassword, setCurrentPassword] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
+
+  const [activeTab, setActiveTab] = useState<'products' | 'hero' | 'collections' | 'blogs' | 'faqs' | 'orders' | 'newsletter' | 'overview' | 'security'>('hero');
   const [products, setProducts] = useState<Product[]>([]);
   const [homeImages, setHomeImages] = useState<HomepageImages>({ ...HOMEPAGE_IMAGE_DEFAULTS });
   const [savingHomeImage, setSavingHomeImage] = useState<string | null>(null);
@@ -259,10 +266,29 @@ export const AdminPortal: React.FC = () => {
   // Check existing session on mount
   useEffect(() => {
     const token = sessionStorage.getItem('rabbi_admin_auth_token');
-    if (token) {
-      setIsAuthenticated(true);
-      fetchData();
-    }
+    if (!token) return;
+    let cancelled = false;
+
+    const restoreSession = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/admin/session`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error('Session expired');
+        if (cancelled) return;
+        setIsAuthenticated(true);
+        fetchData();
+      } catch {
+        if (cancelled) return;
+        sessionStorage.removeItem('rabbi_admin_auth_token');
+        setIsAuthenticated(false);
+      }
+    };
+
+    restoreSession();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -302,6 +328,34 @@ export const AdminPortal: React.FC = () => {
     sessionStorage.removeItem('rabbi_admin_auth_token');
     setIsAuthenticated(false);
     setPassword('');
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsChangingPassword(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/change-password`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || !data?.token) {
+        throw new Error(data?.error || 'Could not change the passphrase. Please try again.');
+      }
+      sessionStorage.setItem('rabbi_admin_auth_token', data.token);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      showToast('Passphrase updated. Other sessions have been signed out.');
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Could not change the passphrase.', 'error');
+    } finally {
+      setIsChangingPassword(false);
+    }
   };
 
   const fetchData = async () => {
@@ -1075,6 +1129,15 @@ export const AdminPortal: React.FC = () => {
           >
             <ShoppingBag size={14} />
             Orders & Paystack
+          </button>
+          <button
+            onClick={() => setActiveTab('security')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+              activeTab === 'security' ? 'bg-[#e62b32] text-white shadow-xs' : 'text-gray-700 hover:text-black hover:bg-gray-200/70'
+            }`}
+          >
+            <ShieldCheck size={14} />
+            Security
           </button>
 
           <button
@@ -2028,6 +2091,98 @@ export const AdminPortal: React.FC = () => {
                 </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* TAB 9: SECURITY */}
+        {activeTab === 'security' && (
+          <div className="max-w-2xl space-y-6">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Security</h2>
+              <p className="text-xs text-gray-500 mt-1">
+                Change the passphrase used to unlock this portal. Updating it signs out every other session.
+              </p>
+            </div>
+
+            <form
+              onSubmit={handleChangePassword}
+              className="bg-white border border-gray-200 rounded-xl p-5 sm:p-6 space-y-5 shadow-2xs"
+            >
+              <div>
+                <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">
+                  Current passphrase
+                </label>
+                <div className="relative">
+                  <input
+                    type={showCurrentPassword ? 'text' : 'password'}
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Enter current passphrase"
+                    autoComplete="current-password"
+                    required
+                    className="w-full bg-white border border-gray-300 focus:border-black rounded-lg py-2.5 px-3 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none transition-colors shadow-2xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    aria-label="Toggle current passphrase visibility"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-black cursor-pointer"
+                  >
+                    {showCurrentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">
+                  New passphrase
+                </label>
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? 'text' : 'password'}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="At least 10 characters"
+                    autoComplete="new-password"
+                    minLength={10}
+                    required
+                    className="w-full bg-white border border-gray-300 focus:border-black rounded-lg py-2.5 px-3 pr-10 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none transition-colors shadow-2xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    aria-label="Toggle new passphrase visibility"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-black cursor-pointer"
+                  >
+                    {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2">
+                  Confirm new passphrase
+                </label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Repeat new passphrase"
+                  autoComplete="new-password"
+                  minLength={10}
+                  required
+                  className="w-full bg-white border border-gray-300 focus:border-black rounded-lg py-2.5 px-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none transition-colors shadow-2xs"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isChangingPassword}
+                className="w-full bg-[#e62b32] hover:bg-[#cf2229] text-white font-bold py-3 rounded-lg text-xs uppercase tracking-widest transition-all shadow-md active:scale-[0.99] cursor-pointer disabled:opacity-50"
+              >
+                {isChangingPassword ? 'Updating...' : 'Update passphrase'}
+              </button>
+            </form>
           </div>
         )}
       </main>

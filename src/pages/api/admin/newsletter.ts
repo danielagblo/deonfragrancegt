@@ -11,7 +11,7 @@ function unauthorized() {
 }
 
 export const GET: APIRoute = async ({ request, url }) => {
-  if (!checkAdminAuth(request.headers.get('Authorization'), url.searchParams.get('token'))) {
+  if (!(await checkAdminAuth(request.headers.get('Authorization'), url.searchParams.get('token')))) {
     return unauthorized();
   }
 
@@ -31,7 +31,7 @@ export const GET: APIRoute = async ({ request, url }) => {
 };
 
 export const DELETE: APIRoute = async ({ request, url }) => {
-  if (!checkAdminAuth(request.headers.get('Authorization'), url.searchParams.get('token'))) {
+  if (!(await checkAdminAuth(request.headers.get('Authorization'), url.searchParams.get('token')))) {
     return unauthorized();
   }
 

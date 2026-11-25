@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { createHmac, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import mysql from 'mysql2/promise';
 import type { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import type { Collection, Product, FragranceNote, ProductVariant, Review, Order, OrderItem, BlogPost, FAQ, NewsletterSubscriber } from '../types';
@@ -1164,14 +1165,102 @@ export async function getAdminStats() {
   };
 }
 
-export function checkAdminAuth(authHeader: string | null | undefined, queryToken?: string | null): boolean {
-  const token = authHeader || queryToken;
-  if (!token) return false;
-  const clean = token.replace(/^Bearer\s+/i, '').trim();
-  return clean.length >= 10 && clean.startsWith('dion_admin_token_');
+// ----------------- Admin authentication -----------------
+
+const ADMIN_PASSWORD_SETTING_KEY = 'admin_password_hash';
+const LEGACY_ADMIN_PASSWORD = 'RabbiAzanduna2026!';
+const ADMIN_TOKEN_TTL_MS = 12 * 60 * 60 * 1000;
+
+function safeEqualText(a: string, b: string): boolean {
+  const left = Buffer.from(a);
+  const right = Buffer.from(b);
+  return left.length === right.length && timingSafeEqual(left, right);
 }
 
-export function verifyAdminPassword(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || 'RabbiAzanduna2026!';
-  return password === expected;
+function hashAdminPassword(password: string): string {
+  const salt = randomBytes(16).toString('hex');
+  const hash = scryptSync(password, salt, 64).toString('hex');
+  return `scrypt:${salt}:${hash}`;
+}
+
+function verifyAdminPasswordHash(password: string, stored: string): boolean {
+  const [scheme, salt, expectedHex] = stored.split(':');
+  if (scheme !== 'scrypt' || !salt || !expectedHex) return false;
+  try {
+    const expected = Buffer.from(expectedHex, 'hex');
+    if (!expected.length) return false;
+    const actual = scryptSync(password, salt, expected.length).toString('hex');
+    return safeEqualText(actual, expectedHex);
+  } catch (err) {
+    console.error('Could not verify stored admin password hash:', err);
+    return false;
+  }
+}
+
+async function readAdminPasswordHash(): Promise<string | null> {
+  await ensureHomepageTable();
+  const db = getPool();
+  const [rows] = await db.query<RowDataPacket[]>(
+    'SELECT setting_value FROM site_settings WHERE setting_key = ? LIMIT 1',
+    [ADMIN_PASSWORD_SETTING_KEY]
+  );
+  const value = rows[0]?.setting_value;
+  return value ? String(value) : null;
+}
+
+async function getAdminAuthSecret(): Promise<string> {
+  const storedHash = await readAdminPasswordHash();
+  return storedHash || process.env.ADMIN_PASSWORD || LEGACY_ADMIN_PASSWORD;
+}
+
+export async function createAdminToken(): Promise<string> {
+  const secret = await getAdminAuthSecret();
+  const expiresAt = Date.now() + ADMIN_TOKEN_TTL_MS;
+  const nonce = randomBytes(18).toString('base64url');
+  const payload = `${expiresAt}.${nonce}`;
+  const signature = createHmac('sha256', secret).update(payload).digest('base64url');
+  return `dion_admin_token_${payload}.${signature}`;
+}
+
+export async function checkAdminAuth(
+  authHeader: string | null | undefined,
+  queryToken?: string | null
+): Promise<boolean> {
+  const rawToken = authHeader || queryToken;
+  if (!rawToken) return false;
+  const token = rawToken.replace(/^Bearer\s+/i, '').trim();
+  const match = /^dion_admin_token_(\d+)\.([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/.exec(token);
+  if (!match) return false;
+  const [, expiresAt, nonce, signature] = match;
+  if (Date.now() >= Number(expiresAt)) return false;
+  try {
+    const secret = await getAdminAuthSecret();
+    const expected = createHmac('sha256', secret).update(`${expiresAt}.${nonce}`).digest('base64url');
+    return safeEqualText(signature, expected);
+  } catch (err) {
+    console.error('Admin authorization check failed:', err?.message || err);
+    return false;
+  }
+}
+
+export async function verifyAdminPassword(password: string): Promise<boolean> {
+  try {
+    const storedHash = await readAdminPasswordHash();
+    if (storedHash) return verifyAdminPasswordHash(password, storedHash);
+    return safeEqualText(password, process.env.ADMIN_PASSWORD || LEGACY_ADMIN_PASSWORD);
+  } catch (err) {
+    console.error('Admin password verification failed:', err?.message || err);
+    return false;
+  }
+}
+
+export async function setAdminPassword(password: string): Promise<void> {
+  await ensureHomepageTable();
+  const db = getPool();
+  await db.query(
+    `INSERT INTO site_settings (setting_key, setting_value, updated_at)
+     VALUES (?, ?, ?)
+     ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value), updated_at = VALUES(updated_at)`,
+    [ADMIN_PASSWORD_SETTING_KEY, hashAdminPassword(password), new Date()]
+  );
 }

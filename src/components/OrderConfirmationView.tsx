@@ -4,16 +4,20 @@ import { API_BASE_URL } from '../config/api';
 
 export const OrderConfirmationView: React.FC = () => {
   const [reference, setReference] = useState<string>('');
-  const [status, setStatus] = useState<'verifying' | 'success' | 'simulated'>('verifying');
+  const [status, setStatus] = useState<'verifying' | 'success' | 'failed'>('verifying');
   const [orderDetails, setOrderDetails] = useState<any>(null);
   const [copied, setCopied] = useState<boolean>(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const ref = params.get('reference') || params.get('trxref') || 'OUD-' + Math.floor(Date.now() / 1000);
-    const isSimulated = params.get('simulated') === 'true';
+    const ref = params.get('reference') || params.get('trxref') || '';
 
     setReference(ref);
+
+    if (!ref) {
+      setStatus('failed');
+      return;
+    }
 
     // Load any saved order info from sessionStorage as initial state
     try {
@@ -24,13 +28,8 @@ export const OrderConfirmationView: React.FC = () => {
       }
     } catch (e) {}
 
-    if (isSimulated) {
-      setStatus('simulated');
-      return;
-    }
-
     // Verify payment with server
-    fetch(`${API_BASE_URL}/api/payments/verify/${ref}`)
+    fetch(`${API_BASE_URL}/api/payments/verify/${encodeURIComponent(ref)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data && data.paystack?.status === 'success') {
@@ -39,11 +38,11 @@ export const OrderConfirmationView: React.FC = () => {
             setOrderDetails(data.order);
           }
         } else {
-          setStatus('simulated');
+          setStatus('failed');
         }
       })
       .catch(() => {
-        setStatus('simulated');
+        setStatus('failed');
       });
   }, []);
 
@@ -90,6 +89,41 @@ Dion Fragrance`;
   };
 
   const items = orderDetails?.items || [];
+
+  if (status !== 'success') {
+    const failed = status === 'failed';
+
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 text-center font-['Poppins',sans-serif]">
+        <div className="w-16 h-16 mx-auto mb-5 rounded-full border-2 border-[#D4AF37]/40 flex items-center justify-center">
+          {failed ? (
+            <span className="text-2xl font-bold text-red-600">!</span>
+          ) : (
+            <span className="w-7 h-7 border-4 border-gray-200 border-t-[#D4AF37] rounded-full animate-spin" />
+          )}
+        </div>
+        <h1 className="font-['Cormorant_Garamond',serif] text-2xl sm:text-4xl font-medium uppercase text-[#1C140C] mb-3">
+          {failed ? 'Payment Not Verified' : 'Verifying Your Payment'}
+        </h1>
+        <p className="text-sm text-gray-600 max-w-md mx-auto leading-relaxed mb-5">
+          {failed
+            ? 'We could not confirm this payment with Paystack. If you completed checkout, please contact us with your reference so we can check it manually.'
+            : 'Please wait while we confirm your payment with Paystack.'}
+        </p>
+        {reference && (
+          <p className="text-xs text-gray-500 mb-6">
+            Reference: <span className="font-mono font-bold text-[#1C140C]">{reference}</span>
+          </p>
+        )}
+        <a
+          href="/collections"
+          className="inline-block px-6 py-3 bg-[#D4AF37] hover:bg-[#C49B2A] text-[#1C140C] font-bold text-xs uppercase tracking-wider rounded-lg transition-colors"
+        >
+          Return to Shop
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-3.5 sm:px-4 py-10 sm:py-20 text-center font-['Poppins',sans-serif]">

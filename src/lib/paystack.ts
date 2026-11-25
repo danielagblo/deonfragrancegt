@@ -42,6 +42,13 @@ export interface PaystackVerifyResponse {
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || '';
 const PAYSTACK_BASE_URL = 'https://api.paystack.co';
 
+function requirePaystackSecretKey(): string {
+  if (!PAYSTACK_SECRET_KEY) {
+    throw new Error('PAYSTACK_SECRET_KEY is not configured');
+  }
+  return PAYSTACK_SECRET_KEY;
+}
+
 function timingSafeEqualHex(expected: string, actual: string): boolean {
   const a = expected.toLowerCase();
   const b = actual.toLowerCase();
@@ -58,17 +65,12 @@ export async function verifyPaystackWebhookSignature(
   rawBody: string,
   signature: string | null
 ): Promise<boolean> {
-  if (!PAYSTACK_SECRET_KEY) {
-    console.warn('[Paystack] No PAYSTACK_SECRET_KEY set; accepting unverified webhook in simulated mode.');
-    return true;
-  }
-
-  if (!signature) return false;
+  if (!PAYSTACK_SECRET_KEY || !signature) return false;
 
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
     'raw',
-    encoder.encode(PAYSTACK_SECRET_KEY),
+    encoder.encode(requirePaystackSecretKey()),
     { name: 'HMAC', hash: 'SHA-512' },
     false,
     ['sign']
@@ -82,23 +84,12 @@ export async function verifyPaystackWebhookSignature(
 }
 
 export async function initializeTransaction(req: InitPaymentRequest): Promise<PaystackInitResponse> {
-  if (!PAYSTACK_SECRET_KEY) {
-    console.log('[Paystack] No PAYSTACK_SECRET_KEY set. Returning simulated test payment authorization.');
-    return {
-      status: true,
-      message: 'Simulated authorization generated (Local Dev)',
-      data: {
-        authorization_url: req.callback_url || `/order/confirmation?reference=${req.reference}&simulated=true`,
-        access_code: `test_code_${req.reference}`,
-        reference: req.reference,
-      },
-    };
-  }
+  const secretKey = requirePaystackSecretKey();
 
   const response = await fetch(`${PAYSTACK_BASE_URL}/transaction/initialize`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+      Authorization: `Bearer ${secretKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(req),
@@ -113,25 +104,11 @@ export async function initializeTransaction(req: InitPaymentRequest): Promise<Pa
 }
 
 export async function verifyTransaction(reference: string): Promise<PaystackVerifyResponse> {
-  if (!PAYSTACK_SECRET_KEY) {
-    console.log(`[Paystack] Simulating transaction verification for ref: ${reference}`);
-    return {
-      status: true,
-      message: 'Simulated verification successful (Local Dev)',
-      data: {
-        id: Date.now(),
-        status: 'success',
-        reference,
-        amount: 1000,
-        currency: 'GHS',
-        channel: 'card',
-      },
-    };
-  }
+  const secretKey = requirePaystackSecretKey();
 
   const response = await fetch(`${PAYSTACK_BASE_URL}/transaction/verify/${encodeURIComponent(reference)}`, {
     headers: {
-      Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+      Authorization: `Bearer ${secretKey}`,
     },
   });
 

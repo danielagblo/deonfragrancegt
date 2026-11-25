@@ -10,6 +10,7 @@ export const CartDrawer: React.FC = () => {
   const [promoCode, setPromoCode] = useState('');
   const [discountApplied, setDiscountApplied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
   const [checkoutStep, setCheckoutStep] = useState<'cart' | 'details'>('cart');
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
@@ -45,6 +46,7 @@ export const CartDrawer: React.FC = () => {
     }
 
     setIsLoading(true);
+    setCheckoutError('');
 
     try {
       const payload = {
@@ -92,35 +94,16 @@ export const CartDrawer: React.FC = () => {
         sessionStorage.setItem('dion_last_order', JSON.stringify(lastOrderInfo));
       } catch (e) {}
 
-      if (data.paystack?.authorization_url) {
-        cartStore.clearCart();
-        cartStore.closeDrawer();
-        window.location.href = data.paystack.authorization_url;
-      } else {
-        cartStore.clearCart();
-        cartStore.closeDrawer();
-        window.location.href = `/order/confirmation?reference=${data.reference || 'OUD-TEST'}&simulated=true`;
+      if (!data.paystack?.authorization_url) {
+        throw new Error('Paystack did not return an authorization URL');
       }
-    } catch (err) {
-      const testRef = 'OUD-' + Date.now();
-      try {
-        sessionStorage.setItem('dion_last_order', JSON.stringify({
-          reference: testRef,
-          customerName,
-          customerEmail,
-          customerPhone,
-          totalAmount: finalTotal,
-          items: items.map((it) => ({
-            productName: it.product.name,
-            variantSize: it.selectedVariant.size,
-            quantity: it.quantity,
-            unitPrice: it.selectedVariant.price,
-          })),
-        }));
-      } catch (e) {}
+
       cartStore.clearCart();
       cartStore.closeDrawer();
-      window.location.href = `/order/confirmation?reference=${testRef}&simulated=true`;
+      window.location.href = data.paystack.authorization_url;
+    } catch (err) {
+      console.error('Paystack checkout error:', err);
+      setCheckoutError('Payment could not be started. Please try again or contact us if the problem continues.');
     } finally {
       setIsLoading(false);
     }
@@ -290,6 +273,12 @@ export const CartDrawer: React.FC = () => {
                     className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-base sm:text-xs text-[#1C140C] focus:border-[#D4AF37] focus:outline-none"
                   />
                 </div>
+
+                {checkoutError && (
+                  <p className="text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                    {checkoutError}
+                  </p>
+                )}
 
                 <div className="p-3 bg-[#f4f7fb] border border-[#d5e0ee] rounded-lg flex items-center gap-2 text-xs text-gray-700">
                   <ShieldCheck size={20} className="text-[#1C140C] shrink-0" />

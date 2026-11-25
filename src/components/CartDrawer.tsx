@@ -72,7 +72,12 @@ export const CartDrawer: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Server checkout initialization error');
+        let message = 'Server checkout initialization error';
+        try {
+          const errorBody = await response.json();
+          message = errorBody?.details || errorBody?.error || message;
+        } catch {}
+        throw new Error(message);
       }
 
       const data = await response.json();
@@ -103,7 +108,11 @@ export const CartDrawer: React.FC = () => {
       window.location.href = data.paystack.authorization_url;
     } catch (err) {
       console.error('Paystack checkout error:', err);
-      setCheckoutError('Payment could not be started. Please try again or contact us if the problem continues.');
+      setCheckoutError(
+        err instanceof Error
+          ? err.message
+          : 'Payment could not be started. Please try again or contact us if the problem continues.'
+      );
     } finally {
       setIsLoading(false);
     }

@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { verifyAdminPassword } from '../../../lib/db';
+import { createAdminToken, verifyAdminPassword } from '../../../lib/db';
 
 export const prerender = false;
 
@@ -15,14 +15,14 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    if (!verifyAdminPassword(password)) {
+    if (!(await verifyAdminPassword(password))) {
       return new Response(
         JSON.stringify({ error: 'Invalid master password. Access denied.' }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const token = `dion_admin_token_${Math.floor(Date.now() / 1000)}`;
+    const token = await createAdminToken();
 
     return new Response(
       JSON.stringify({

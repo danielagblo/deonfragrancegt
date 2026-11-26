@@ -76,7 +76,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
         {/* Left Image Gallery */}
         <div className="space-y-3 sm:space-y-4">
-          <div className="aspect-[4/5] bg-neutral-100 rounded-2xl overflow-hidden border border-gray-200 relative shadow-sm">
+          <div className="flex h-[220px] sm:h-[300px] lg:h-[380px] items-center justify-center bg-neutral-100 rounded-2xl overflow-hidden border border-gray-200 relative shadow-sm">
             <img
               src={activeImage || product.imageUrl}
               alt={product.name}
@@ -86,7 +86,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                   target.src = 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=800&q=80';
                 }
               }}
-              className="w-full h-full object-cover object-center"
+              className="max-h-full w-full object-contain object-center"
             />
             {savings && (
               <span className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-[#D4AF37] text-[#1C140C] font-extrabold text-[10px] sm:text-xs uppercase px-2.5 py-1 rounded shadow">
@@ -169,31 +169,6 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
             })()}
           </div>
 
-          <p className="text-gray-700 text-sm leading-relaxed font-light whitespace-pre-line">
-            {product.description}
-          </p>
-
-          <div className="border border-gray-200 rounded-2xl overflow-hidden">
-            <h2 className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1C140C]/60 bg-gray-50">
-              Details
-            </h2>
-            <dl className="divide-y divide-gray-200 text-sm">
-              {[
-                ['Concentration', product.concentration],
-                ['Volume', (selectedVariant.size || '30ml').replace(/(\d+(?:\.\d+)?)\s*ml/i, '$1 ml')],
-                ['Scent', product.scentFamily || product.subtitle],
-                ['For', product.gender],
-                ['Sillage', product.sillage],
-                ['Longevity', product.longevity],
-              ].filter(([, value]) => value).map(([label, value]) => (
-                <div key={label} className="grid grid-cols-[8.5rem_1fr] gap-3 px-4 py-3">
-                  <dt className="text-[#1C140C]/55">{label}</dt>
-                  <dd className="text-[#1C140C] font-medium">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
           {/* Size Variant Selector */}
           {product.variants && product.variants.length > 0 && (
             <div className="space-y-2 pt-2">
@@ -251,7 +226,7 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
                   </p>
                 )}
 
-                <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                   <div className="flex items-center border border-gray-300 rounded-lg bg-gray-50 px-1.5 sm:px-2 py-1 shrink-0">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -320,6 +295,31 @@ export const ProductDetailView: React.FC<Props> = ({ product, relatedProducts })
               </div>
             );
           })()}
+
+          <p className="text-gray-700 text-sm leading-relaxed font-light whitespace-pre-line">
+            {product.description}
+          </p>
+
+          <div className="border border-gray-200 rounded-2xl overflow-hidden">
+            <h2 className="px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#1C140C]/60 bg-gray-50">
+              Details
+            </h2>
+            <dl className="divide-y divide-gray-200 text-sm">
+              {[
+                ['Concentration', product.concentration],
+                ['Volume', (selectedVariant.size || '30ml').replace(/(\d+(?:\.\d+)?)\s*ml/i, '$1 ml')],
+                ['Scent', product.scentFamily || product.subtitle],
+                ['For', product.gender],
+                ['Sillage', product.sillage],
+                ['Longevity', product.longevity],
+              ].filter(([, value]) => value).map(([label, value]) => (
+                <div key={label} className="grid grid-cols-[6.25rem_1fr] gap-3 px-4 py-3 min-[420px]:grid-cols-[8.5rem_1fr]">
+                  <dt className="text-[#1C140C]/55">{label}</dt>
+                  <dd className="text-[#1C140C] font-medium">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
 
           {/* Guarantees */}
           <div className="grid grid-cols-1 min-[480px]:grid-cols-3 gap-2.5 sm:gap-3 pt-5 sm:pt-6 border-t border-gray-200 text-xs text-gray-600 font-medium">

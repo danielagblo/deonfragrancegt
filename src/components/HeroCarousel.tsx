@@ -51,11 +51,11 @@ export const HeroCarousel: React.FC<Props> = ({ slides = HERO_SLIDES }) => {
               className="h-full w-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1C140C]/80 via-[#1C140C]/15 to-[#1C140C]/10" />
-            <div className="absolute inset-x-0 bottom-0 px-6 pb-10 sm:pb-12 text-center text-white">
-              <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
+            <div className="absolute inset-x-0 bottom-0 px-12 pb-10 sm:pb-12 text-center text-white">
+              <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] sm:tracking-[0.22em] text-white/80">
                 {slide.kicker}
               </p>
-              <p className="font-['Cormorant_Garamond',serif] text-[34px] sm:text-[52px] font-medium leading-none mt-1 tracking-[0.04em]">
+              <p className="font-['Cormorant_Garamond',serif] text-[26px] sm:text-[52px] font-medium leading-none mt-1 tracking-[0.02em] sm:tracking-[0.04em]">
                 {slide.title}
               </p>
             </div>

@@ -59,19 +59,25 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="w-full bg-white z-40 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 flex items-center gap-3 sm:gap-6">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-16 flex items-center gap-2 sm:gap-6 min-w-0">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 text-[#1C140C] cursor-pointer rounded-md"
+          className="lg:hidden shrink-0 p-1.5 text-[#1C140C] cursor-pointer rounded-md"
           aria-label="Toggle Menu"
         >
           {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        <a href="/" className="shrink-0 flex items-center gap-2">
-          <img src="/favicon.png" alt="Dion Fragrance" className="h-11 w-11 sm:h-12 sm:w-12 rounded-md" />
-          <span className="font-['Cormorant_Garamond',serif] text-[26px] sm:text-[32px] font-medium uppercase tracking-[0.12em] text-[#1C140C] leading-none">
-            Dion Fragrance
+        <a href="/" className="min-w-0 flex items-center gap-1.5 sm:gap-2">
+          <img src="/logo.png" alt="" className="h-9 w-auto shrink-0 bg-transparent sm:h-11" />
+          <span className="min-w-0 font-['Cormorant_Garamond',serif] font-medium uppercase leading-none text-[#1C140C]">
+            <span className="block text-[15px] tracking-[0.06em] sm:hidden">
+              Dion
+              <span className="mt-0.5 block">Fragrance</span>
+            </span>
+            <span className="hidden truncate sm:inline sm:text-[22px] sm:tracking-[0.06em] lg:text-[28px]">
+              Dion Fragrance
+            </span>
           </span>
         </a>
 
@@ -99,7 +105,7 @@ export const Navbar: React.FC = () => {
 
         <button
           onClick={() => cartStore.openDrawer()}
-          className="ml-auto lg:ml-0 p-2 text-[#1C140C] relative cursor-pointer"
+          className="ml-auto shrink-0 lg:ml-0 p-1.5 sm:p-2 text-[#1C140C] relative cursor-pointer"
           aria-label="Shopping Bag"
         >
           <ShoppingBag size={22} strokeWidth={1.5} />
